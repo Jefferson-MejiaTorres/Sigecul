@@ -12,7 +12,13 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "SIGECUL - Sistema de Gestión Cultural",
   description: "Sistema de control de gestión de proyectos ejecutados por la Corporación Cultural Cúcuta",
-    generator: 'Jefferson Torres'
+  generator: 'Jefferson Torres',
+  icons: {
+    icon: [
+      { url: '/images/favicon/favicon.ico', type: 'image/x-icon' },
+      { url: '/images/favicon/favicon.svg', type: 'image/svg+xml' }
+    ]
+  }
 }
 
 export default function RootLayout({
