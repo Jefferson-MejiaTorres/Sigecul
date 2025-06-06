@@ -31,6 +31,7 @@ import { GastosRecientes } from "@/components/gastos/gastos-recientes"
 import { PagosRecientes } from "@/components/pagos/pagos-recientes"
 import { EvidenciasRecientes } from "@/components/evidencias/evidencias-recientes"
 import { formatCOP } from "@/lib/format-cop"
+import { LogoutModal } from "@/components/LogoutModal"
 
 interface DashboardStats {
   proyectosActivos: number
@@ -53,6 +54,8 @@ export default function DashboardPage() {
     presupuestoTotal: 0,
     evidenciasSubidas: 0,
   })
+  const [logoutOpen, setLogoutOpen] = useState(false)
+  const [logoutLoading, setLogoutLoading] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -206,7 +209,10 @@ export default function DashboardPage() {
   }
 
   const handleLogout = async () => {
+    setLogoutLoading(true)
     await signOut()
+    setLogoutLoading(false)
+    setLogoutOpen(false)
   }
 
   // Permitir refresco externo desde ListaProyectos
@@ -283,12 +289,13 @@ export default function DashboardPage() {
             <Button variant="ghost" size="sm">
               <Settings className="h-4 w-4" />
             </Button>
-            <Button variant="ghost" size="sm" onClick={handleLogout}>
+            <Button variant="ghost" size="sm" onClick={() => setLogoutOpen(true)}>
               <LogOut className="h-4 w-4" />
             </Button>
           </div>
         </div>
       </header>
+      <LogoutModal open={logoutOpen} onConfirm={handleLogout} onCancel={() => setLogoutOpen(false)} loading={logoutLoading} />
 
       <div className="p-6">
         {/* Stats Cards */}

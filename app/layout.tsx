@@ -6,6 +6,7 @@ import { AuthProvider } from "@/contexts/auth-context"
 import { GastosUpdateProvider } from "@/components/gastos/gastos-update-context"
 import { PagosUpdateProvider } from "@/components/pagos/pagos-update-context"
 import { EvidenciasUpdateProvider } from "@/components/evidencias/evidencias-update-context"
+import { SessionRefresher } from "@/components/SessionRefresher"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -30,6 +31,7 @@ export default function RootLayout({
     <html lang="es">
       <body className={inter.className}>
         <AuthProvider>
+          <SessionRefresher />
           <GastosUpdateProvider>
             <PagosUpdateProvider>
               <EvidenciasUpdateProvider>

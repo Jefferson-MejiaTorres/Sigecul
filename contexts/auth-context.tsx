@@ -174,23 +174,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setLoading(true)
       console.log('🚪 Cerrando sesión...')
-      
-      const { error } = await supabase.auth.signOut()
-      
-      if (error) {
-        console.error('❌ Error en logout:', error)
+      // Si no hay sesión, limpiar y redirigir igual
+      if (!session) {
+        setUser(null)
+        setSession(null)
+        setSupabaseUser(null)
+        router.push("/login")
         return
       }
-      
+      const { error } = await supabase.auth.signOut()
+      if (error) {
+        console.error('❌ Error en logout:', error)
+        // Forzar limpieza y redirección aunque falle
+        setUser(null)
+        setSession(null)
+        setSupabaseUser(null)
+        router.push("/login")
+        return
+      }
       // Limpiar estado local
       setUser(null)
       setSession(null)
       setSupabaseUser(null)
-      
       console.log('✅ Sesión cerrada exitosamente')
       router.push("/login")
     } catch (error) {
       console.error('❌ Error inesperado en signOut:', error)
+      setUser(null)
+      setSession(null)
+      setSupabaseUser(null)
+      router.push("/login")
     } finally {
       setLoading(false)
     }
