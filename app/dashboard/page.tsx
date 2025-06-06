@@ -22,6 +22,8 @@ import {
   Clock,
   XCircle,
   Users,
+  FileText,
+  Download,
 } from "lucide-react"
 import Link from "next/link"
 import { useAuth } from "@/contexts/auth-context"
@@ -856,21 +858,45 @@ export default function DashboardPage() {
                 <h2 className="text-2xl font-bold text-gray-900">Reportes y Análisis</h2>
                 <p className="text-gray-600">Genera informes de tus proyectos</p>
               </div>
-              <Button className="bg-red-600 hover:bg-red-700">
-                <BarChart3 className="h-4 w-4 mr-2" />
-                Generar Reporte
-              </Button>
+              <Link href="/dashboard/reportes">
+                <Button className="bg-red-600 hover:bg-red-700">
+                  <BarChart3 className="h-4 w-4 mr-2" />
+                  Ir a Reportes
+                </Button>
+              </Link>
             </div>
             <div className="grid gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Próximamente</CardTitle>
-                  <CardDescription>Reportes automáticos del sistema</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-center py-8 text-gray-500">Funcionalidad en desarrollo...</div>
-                </CardContent>
-              </Card>
+              <Link href="/dashboard/reportes" className="block">
+                <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 border-red-100 hover:border-red-200">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <BarChart3 className="h-5 w-5 text-red-600" />
+                      Sistema de Reportes
+                    </CardTitle>
+                    <CardDescription>Genera reportes profesionales en PDF y Excel</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div className="flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-blue-500" />
+                        <span>Reportes consolidados</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <BarChart3 className="h-4 w-4 text-green-500" />
+                        <span>Gráficos y estadísticas</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Download className="h-4 w-4 text-purple-500" />
+                        <span>Exportación PDF/Excel</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-orange-500" />
+                        <span>Historial de reportes</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
             </div>
           </TabsContent>
         </Tabs>

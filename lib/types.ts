@@ -97,3 +97,22 @@ export interface InformeFinal {
   created_at: string // timestamp with time zone
   created_by: string | null // uuid
 }
+
+export interface HistorialReporte {
+  id: string // uuid
+  nombre: string
+  descripcion: string | null
+  tipo: "ejecutivo" | "financiero" | "proyectos" | "personalizado"
+  formato: "pdf" | "excel" | "ambos"
+  fecha_creacion: string // timestamp with time zone
+  tamaño_mb: number // numeric
+  estado: "completado" | "procesando" | "error"
+  creado_por: string
+  descargas: number // integer
+  modulos: string[] // text array
+  proyectos_incluidos: number // integer
+  url_archivo: string | null
+  parametros_generacion: Record<string, any> | null // jsonb
+  created_at: string // timestamp with time zone
+  updated_at: string // timestamp with time zone
+}
