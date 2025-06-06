@@ -52,6 +52,24 @@ export default function PagosPage() {
     }
   }
 
+  useEffect(() => {
+    if (!authLoading && user) {
+      let lastFetch = 0
+      const handleVisibility = () => {
+        const now = Date.now()
+        if (now - lastFetch < 1000) return
+        lastFetch = now
+        if (document.visibilityState === "visible") {
+          window.location.reload()
+        }
+      }
+      document.addEventListener("visibilitychange", handleVisibility)
+      return () => {
+        document.removeEventListener("visibilitychange", handleVisibility)
+      }
+    }
+  }, [authLoading, user])
+
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">

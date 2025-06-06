@@ -71,15 +71,22 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!authLoading && user) {
-      // Refrescar automáticamente al volver a la pestaña
+      let visibilityTimeout: NodeJS.Timeout | null = null
+      let lastFetch = 0
       const handleVisibility = () => {
+        // Evitar múltiples llamadas seguidas
+        const now = Date.now()
+        if (now - lastFetch < 1000) return
+        lastFetch = now
         if (document.visibilityState === "visible") {
-          fetchDashboardData()
+          setLoading(true)
+          fetchDashboardData().finally(() => setLoading(false))
         }
       }
       document.addEventListener("visibilitychange", handleVisibility)
       return () => {
         document.removeEventListener("visibilitychange", handleVisibility)
+        if (visibilityTimeout) clearTimeout(visibilityTimeout)
       }
     }
   }, [authLoading, user])

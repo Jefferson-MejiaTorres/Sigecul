@@ -103,9 +103,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     )
 
+    // Listener para refrescar sesión al volver a la pestaña
+    const handleVisibility = async () => {
+      if (document.visibilityState === 'visible') {
+        try {
+          const { data: { session: refreshedSession }, error } = await supabase.auth.getSession()
+          if (error || !refreshedSession) {
+            // Si no hay sesión válida, forzar logout
+            setUser(null)
+            setSession(null)
+            setSupabaseUser(null)
+            if (isMounted) router.push('/login')
+            return
+          }
+          setSession(refreshedSession)
+          setSupabaseUser(refreshedSession.user)
+          await fetchUserProfile(refreshedSession.user.id)
+        } catch (err) {
+          setUser(null)
+          setSession(null)
+          setSupabaseUser(null)
+          if (isMounted) router.push('/login')
+        } finally {
+          setLoading(false)
+        }
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibility)
+
     return () => {
       isMounted = false
       subscription.unsubscribe()
+      document.removeEventListener('visibilitychange', handleVisibility)
     }
   }, []) // <-- SOLO array vacío para evitar listeners duplicados y bucles
 
